@@ -110,7 +110,7 @@ You can point the analyzer at any other Python repository by writing a
 matching `architecture/*.yaml` file for it (see that file for the schema)
 and giving its path on the Overview page.
 
-## Known Milestone-1 limitations (documented, not hidden)
+## Known Milestone-1 limitations
 
 - **Language support**: Python only. Adding a language is one new
   `LanguageParser` subclass in `backend/analysis/parser/` — nothing
