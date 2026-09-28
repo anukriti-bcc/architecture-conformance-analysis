@@ -1,0 +1,72 @@
+5# Explicit architectural intent for sample-ecommerce.
+# This file is the "expected architecture" the engine compares reality against.
+
+architecture:
+  name: layered-architecture
+
+# Maps a directory name (anywhere in the repo) to its architectural role.
+# The closest matching ancestor directory to a file wins, so nested
+# structures resolve correctly.
+component_mapping:
+  controllers:
+    type: controller
+  services:
+    type: service
+  repositories:
+    type: repository
+  database:
+    type: database
+  models:
+    type: model
+  frontend:
+    type: frontend
+
+rules:
+  - id: R001
+    name: controller-service
+    source: controller
+    target: service
+    relation: allowed
+    description: Controllers may call Services.
+
+  - id: R002
+    name: service-repository
+    source: service
+    target: repository
+    relation: allowed
+    description: Services may call Repositories.
+
+  - id: R003
+    name: repository-database
+    source: repository
+    target: database
+    relation: allowed
+    description: Repositories are the sanctioned path to the database.
+
+  - id: R004
+    name: no-service-database
+    source: service
+    target: database
+    relation: forbidden
+    description: Services must not access the database directly; go through a Repository.
+
+  - id: R005
+    name: no-controller-repository
+    source: controller
+    target: repository
+    relation: forbidden
+    description: Controllers must not skip the Service layer to call Repositories directly.
+
+  - id: R006
+    name: no-controller-database
+    source: controller
+    target: database
+    relation: forbidden
+    description: Controllers must never access the database directly.
+
+  - id: R007
+    name: no-frontend-database
+    source: frontend
+    target: database
+    relation: forbidden
+    description: Frontend code must never access the database directly.
